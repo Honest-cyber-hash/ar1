@@ -121,6 +121,72 @@
         <div class="info-section">
             <h2>KVKK Bilgilendirme ve Açık Rıza</h2>
             <p>Bu uygulama, resim hedefi takibi ve artırılmış gerçeklik deneyimi sağlamak amacıyla cihazınızın kamerasına erişim gerektirir. Kamera görüntünüz yalnızca yerel olarak işlenir ve sunuculara aktarılmaz. <a href="#">Detaylı Metni Oku.</a></p>
+        </div> 
+        <p class="credit">Uygulamayı Geliştiren: <span>Furkan Çilesiz</span></p>
+        <button id="startButton">Deneyimi Başlat</button>
+    </div>
+
+    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: false;" 
+             color-space="sRGB" 
+             renderer="colorManagement: true, physicallyCorrectLights" 
+             vr-mode-ui="enabled: false" 
+             device-orientation-permission-ui="enabled: false">
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-entity mindar-image-target="targetIndex: 0" id="target">
+            </a-entity>
+    </a-scene>
+
+    <script>
+        const entryScreen = document.getElementById('entryScreen');
+        const startButton = document.getElementById('startButton');
+        const arScene = document.querySelector('a-scene');
+
+        startButton.addEventListener('click', () => {
+            entryScreen.style.display = 'none'; // Giriş ekranını gizle
+            arScene.style.display = 'block';   // AR sahnesini göster
+            arScene.systems['mindar-image-system'].start(); // AR deneyimini başlat
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <title>AR Projem: Kişisel Verilerin Korunması ve Deneyimi</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        #entryScreen {
+            position: absolute; width: 100%; height: 100%; 
+            background-color: #00CED1; /* Türk mavisi / DarkTurquoise */
+            color: white; /* Metin rengi beyaz */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 2000; padding: 20px; text-align: center;
+        }
+        h1 { font-size: 2em; margin-bottom: 0.5em; color: white; }
+        .info-section { 
+            max-width: 600px; margin-bottom: 2em; border: 1px solid rgba(255, 255, 255, 0.3); 
+            padding: 15px; border-radius: 8px; color: white;
+        }
+        .info-section h2 { font-size: 1.2em; margin-top: 0; color: white; }
+        .info-section a { color: white; font-weight: bold; text-decoration: underline; } /* Beyaz linkler */
+        .credit { margin-bottom: 1em; font-style: italic; color: white; }
+        .credit span { font-weight: bold; color: white; }
+        #startButton {
+            padding: 15px 30px; font-size: 18px; font-weight: bold;
+            background-color: #ff3b30; color: white; border: none; border-radius: 10px;
+            cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: background-color 0.2s;
+        }
+        #startButton:active { background-color: #c92a20; }
+        a-scene { display: none; } /* AR sahnesi başlangıçta gizli */
+    </style>
+</head>
+<body>
+    <div id="entryScreen">
+        <h1>AR Projem</h1>
+        <div class="info-section">
+            <h2>KVKK Bilgilendirme ve Açık Rıza</h2>
+            <p>Bu uygulama, resim hedefi takibi ve artırılmış gerçeklik deneyimi sağlamak amacıyla cihazınızın kamerasına erişim gerektirir. Kamera görüntünüz yalnızca yerel olarak işlenir ve sunuculara aktarılmaz. <a href="#">Detaylı Metni Oku.</a></p>
         </div>
         <p class="credit">Bu uygulama, geliştirici asistanı <span>[Asistanınızın Adı]</span> ile hazırlanmıştır.</p>
         <p class="credit">Uygulamayı Geliştiren: <span>Furkan Çilesiz</span></p>
