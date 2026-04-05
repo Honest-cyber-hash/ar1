@@ -1,196 +1,98 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
-    <title>AR Projem</title>
+    <title>AR Projem: Kişisel Verilerin Korunması ve Deneyimi</title>
     
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-      }
-      /* Başlat butonu tasarımı */
-      #startButton {
-        position: absolute;
-        z-index: 1000;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #ff3b30;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      }
-      #startButton:active {
-        background-color: #c92a20;
-      }
-    </style>
-  </head>
-  <body>
-    <button id="startButton">Deneyimi Başlat</button>
-
-    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: true;" 
-             color-space="sRGB" 
-             renderer="colorManagement: true, physicallyCorrectLights" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
-      
-      <a-assets>
-        <video id="video1" src="video1.mp4" preload="auto" loop crossorigin="anonymous" playsinline webkit-playsinline></video>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity mindar-image-target="targetIndex: 0" id="target">
-        <a-video src="#video1" position="0 0 0" height="1.45" width="1" rotation="0 0 0"></a-video>
-      </a-entity>
-      
-    </a-scene>
-
-    <script>
-      // Sayfa yüklendiğinde çalışacak script
-      document.addEventListener("DOMContentLoaded", function() {
-        const video = document.querySelector('#video1');
-        const target = document.querySelector('#target');
-        const startButton = document.querySelector('#startButton');
-
-        // 1. Butona tıklandığında videonun oynatma iznini al
-        startButton.addEventListener('click', () => {
-          startButton.style.display = 'none'; // Butonu gizle
-          video.play().then(() => {
-            video.pause(); // Sadece izin almak için oynatıp durduruyoruz
-          }).catch((error) => {
-            console.warn("Video oynatma izni alınamadı:", error);
-          });
-        });
-
-        // 2. Kamera tabloyu/hedefi gördüğünde videoyu başlat
-        target.addEventListener("targetFound", () => {
-          console.log("Hedef Bulundu!");
-          video.play();
-        });
-
-        // 3. Kamera tablodan/hedeften uzaklaştığında videoyu durdur
-        target.addEventListener("targetLost", () => {
-          console.log("Hedef Kaybedildi!");
-          video.pause();
-        });
-      });
-    </script>
-  </body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AR Projem: Kişisel Verilerin Korunması ve Deneyimi</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: sans-serif; 
+        }
         #entryScreen {
-            position: absolute; width: 100%; height: 100%; background: white;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 2000; padding: 20px; text-align: center;
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            background-color: navy; /* Lacivert arka plan */
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            z-index: 2000; 
+            padding: 20px; 
+            text-align: center;
+            box-sizing: border-box;
         }
-        h1 { font-size: 2em; margin-bottom: 0.5em; }
-        .info-section { max-width: 600px; margin-bottom: 2em; border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
-        .info-section h2 { font-size: 1.2em; margin-top: 0; }
-        .credit { margin-bottom: 1em; font-style: italic; color: #555; }
-        .credit span { font-weight: bold; }
-        #startButton {
-            padding: 15px 30px; font-size: 18px; font-weight: bold;
-            background-color: #ff3b30; color: white; border: none; border-radius: 10px;
-            cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: background-color 0.2s;
+        h1 { 
+            font-size: 2em; 
+            margin-bottom: 0.5em; 
         }
-        #startButton:active { background-color: #c92a20; }
-        a-scene { display: none; } /* AR sahnesi başlangıçta gizli */
-    </style>
-</head>
-<body>
-    <div id="entryScreen">
-        <h1>AR Projem</h1>
-        <div class="info-section">
-            <h2>KVKK Bilgilendirme ve Açık Rıza</h2>
-            <p>Bu uygulama, resim hedefi takibi ve artırılmış gerçeklik deneyimi sağlamak amacıyla cihazınızın kamerasına erişim gerektirir. Kamera görüntünüz yalnızca yerel olarak işlenir ve sunuculara aktarılmaz. <a href="#">Detaylı Metni Oku.</a></p>
-        </div> 
-        <p class="credit">Uygulamayı Geliştiren: <span>Furkan Çilesiz</span></p>
-        <button id="startButton">Deneyimi Başlat</button>
-    </div>
-
-    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: false;" 
-             color-space="sRGB" 
-             renderer="colorManagement: true, physicallyCorrectLights" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity mindar-image-target="targetIndex: 0" id="target">
-            </a-entity>
-    </a-scene>
-
-    <script>
-        const entryScreen = document.getElementById('entryScreen');
-        const startButton = document.getElementById('startButton');
-        const arScene = document.querySelector('a-scene');
-
-        startButton.addEventListener('click', () => {
-            entryScreen.style.display = 'none'; // Giriş ekranını gizle
-            arScene.style.display = 'block';   // AR sahnesini göster
-            arScene.systems['mindar-image-system'].start(); // AR deneyimini başlat
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <title>AR Projem: Kişisel Verilerin Korunması ve Deneyimi</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; }
-        #entryScreen {
-            position: absolute; width: 100%; height: 100%; 
-            background-color: #00CED1; /* Türk mavisi / DarkTurquoise */
-            color: white; /* Metin rengi beyaz */
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 2000; padding: 20px; text-align: center;
-        }
-        h1 { font-size: 2em; margin-bottom: 0.5em; color: white; }
         .info-section { 
-            max-width: 600px; margin-bottom: 2em; border: 1px solid rgba(255, 255, 255, 0.3); 
-            padding: 15px; border-radius: 8px; color: white;
+            max-width: 600px; 
+            margin-bottom: 2em; 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            padding: 20px; 
+            border-radius: 8px; 
+            background-color: rgba(0, 0, 0, 0.2);
         }
-        .info-section h2 { font-size: 1.2em; margin-top: 0; color: white; }
-        .info-section a { color: white; font-weight: bold; text-decoration: underline; } /* Beyaz linkler */
-        .credit { margin-bottom: 1em; font-style: italic; color: white; }
-        .credit span { font-weight: bold; color: white; }
+        .info-section h2 { 
+            font-size: 1.3em; 
+            margin-top: 0; 
+        }
+        .info-section a { 
+            color: #00CED1; 
+            font-weight: bold; 
+            text-decoration: underline; 
+        }
+        .credit { 
+            margin-bottom: 1.5em; 
+            font-size: 1.1em; 
+        }
+        .credit span { 
+            font-weight: bold; 
+            color: #FFD700; /* İsmin dikkat çekmesi için altın sarısı */
+        }
         #startButton {
-            padding: 15px 30px; font-size: 18px; font-weight: bold;
-            background-color: #ff3b30; color: white; border: none; border-radius: 10px;
-            cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: background-color 0.2s;
+            padding: 15px 40px; 
+            font-size: 18px; 
+            font-weight: bold;
+            background-color: #ff3b30; 
+            color: white; 
+            border: none; 
+            border-radius: 10px;
+            cursor: pointer; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4); 
+            transition: background-color 0.2s;
         }
-        #startButton:active { background-color: #c92a20; }
-        a-scene { display: none; } /* AR sahnesi başlangıçta gizli */
+        #startButton:active { 
+            background-color: #c92a20; 
+        }
+        a-scene { 
+            display: none; 
+        }
     </style>
 </head>
 <body>
     <div id="entryScreen">
-        <h1>AR Projem</h1>
+        <h1>AR Deneyimi</h1>
+        
         <div class="info-section">
             <h2>KVKK Bilgilendirme ve Açık Rıza</h2>
-            <p>Bu uygulama, resim hedefi takibi ve artırılmış gerçeklik deneyimi sağlamak amacıyla cihazınızın kamerasına erişim gerektirir. Kamera görüntünüz yalnızca yerel olarak işlenir ve sunuculara aktarılmaz. <a href="#">Detaylı Metni Oku.</a></p>
+            <p>Bu uygulama, resim hedefi takibi ve artırılmış gerçeklik deneyimi sağlamak amacıyla cihazınızın kamerasına erişim gerektirir. Kamera görüntünüz yalnızca anlık ve yerel olarak işlenir, hiçbir sunucuya kaydedilmez veya aktarılmaz. <a href="#">Detaylı Metni Oku.</a></p>
         </div>
-        <p class="credit">Bu uygulama, geliştirici asistanı <span>[Asistanınızın Adı]</span> ile hazırlanmıştır.</p>
+        
         <p class="credit">Uygulamayı Geliştiren: <span>Furkan Çilesiz</span></p>
+        
         <button id="startButton">Deneyimi Başlat</button>
+
+        <section id="lesson-notes" style="display: none;"></section>
+        <section id="films" style="display: none;"></section>
     </div>
 
     <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: false;" 
@@ -198,20 +100,52 @@
              renderer="colorManagement: true, physicallyCorrectLights" 
              vr-mode-ui="enabled: false" 
              device-orientation-permission-ui="enabled: false">
+        
+        <a-assets>
+            <video id="video1" src="video1.mp4" preload="auto" loop crossorigin="anonymous" playsinline webkit-playsinline></video>
+        </a-assets>
+
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
         <a-entity mindar-image-target="targetIndex: 0" id="target">
-            </a-entity>
+            <a-video src="#video1" position="0 0 0" height="1.45" width="1" rotation="0 0 0"></a-video>
+        </a-entity>
     </a-scene>
 
     <script>
-        const entryScreen = document.getElementById('entryScreen');
-        const startButton = document.getElementById('startButton');
-        const arScene = document.querySelector('a-scene');
+        document.addEventListener("DOMContentLoaded", function() {
+            const entryScreen = document.getElementById('entryScreen');
+            const startButton = document.getElementById('startButton');
+            const arScene = document.querySelector('a-scene');
+            const video = document.querySelector('#video1');
+            const target = document.querySelector('#target');
 
-        startButton.addEventListener('click', () => {
-            entryScreen.style.display = 'none'; // Giriş ekranını gizle
-            arScene.style.display = 'block';   // AR sahnesini göster
-            arScene.systems['mindar-image-system'].start(); // AR deneyimini başlat
+            // 1. Butona tıklandığında giriş ekranını kapat, kamerayı ve AR'yi başlat
+            startButton.addEventListener('click', () => {
+                entryScreen.style.display = 'none'; 
+                arScene.style.display = 'block';   
+                
+                // Video oynatma izni (mobil cihazlar için şart)
+                video.play().then(() => {
+                    video.pause(); 
+                }).catch((error) => {
+                    console.warn("Video oynatma izni alınamadı:", error);
+                });
+
+                arScene.systems['mindar-image-system'].start(); 
+            });
+
+            // 2. Kamera hedef fotoğrafı gördüğünde videoyu başlat
+            target.addEventListener("targetFound", () => {
+                console.log("Hedef Fotoğraf Bulundu!");
+                video.play();
+            });
+
+            // 3. Kamera hedeften uzaklaştığında videoyu durdur
+            target.addEventListener("targetLost", () => {
+                console.log("Hedef Fotoğraf Kaybedildi!");
+                video.pause();
+            });
         });
     </script>
 </body>
